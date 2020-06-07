@@ -1,6 +1,6 @@
+const colorController = require('../controllers/colorController');
+
 module.exports = (router) => {
   router
-    .get('/admin/index', async (ctx) => {
-      ctx.body = 'hello';
-    })
+    .post('/admin/addColor', colorController.addColor)
 };
