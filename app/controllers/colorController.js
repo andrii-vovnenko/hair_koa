@@ -1,16 +1,18 @@
-const { insertColor } = require('../managers/colorsManager');
-const colors = [
-  {
-    colorTypeId: 1,
-    colorName: 'HH613',
-  },
-]
+const colorsManages = require('../managers/colorsManager');
 
 const addColor = async (ctx) => {
   const { colorName, colorTypeId } = ctx.request.body;
-  await insertColor({ colorName, colorTypeId });
+  await colorsManages.insertColor({ colorName, colorTypeId });
+  const colors = await colorsManages.getColors();
+  ctx.body = colors;
+};
+
+const getColors = async (ctx) => {
+  const colors = await colorsManages.getColors();
+  ctx.body = colors;
 };
 
 module.exports = {
   addColor,
+  getColors,
 }
