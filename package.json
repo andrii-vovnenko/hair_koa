@@ -6,9 +6,11 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "config": "^3.3.1",
+    "knex": "^0.21.1",
     "koa": "^2.12.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.0.1",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.4"
   },
   "devDependencies": {

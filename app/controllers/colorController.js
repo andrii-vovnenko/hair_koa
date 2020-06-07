@@ -1,4 +1,4 @@
-
+const { insertColor } = require('../managers/colorsManager');
 const colors = [
   {
     colorTypeId: 1,
@@ -8,10 +8,7 @@ const colors = [
 
 const addColor = async (ctx) => {
   const { colorName, colorTypeId } = ctx.request.body;
-  colors.push({ colorName, colorTypeId });
-  ctx.body = {
-    colors,
-  };
+  await insertColor({ colorName, colorTypeId });
 };
 
 module.exports = {
