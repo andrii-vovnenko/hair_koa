@@ -34,6 +34,13 @@ const addModel = async (ctx) => {
   ctx.body = { status: 'ok' };
 };
 
+const getModels = async (ctx) => {
+  const models = await modelManager.getModels();
+  await delay(500);
+  return ctx.body = models;
+};
+
 module.exports = {
   addModel,
+  getModels,
 }

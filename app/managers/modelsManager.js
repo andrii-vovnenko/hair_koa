@@ -2,7 +2,7 @@ const { knex } = require('../knex');
 
 const TABLE_NAME = 'models';
 
-const addModel = async (modelData) => {
+const addModel = (modelData) => {
   return knex.raw(`insert into ${TABLE_NAME} (${Object.keys(modelData).join(', ')})
     values (${Object.values(modelData).map(v => '?').join(', ')})
     on duplicate key update ${Object.keys(modelData)
@@ -12,6 +12,11 @@ const addModel = async (modelData) => {
     Object.values(modelData));
 };
 
+const getModels = () => {
+  return knex(TABLE_NAME).select();
+};
+
 module.exports = {
   addModel,
+  getModels,
 }
