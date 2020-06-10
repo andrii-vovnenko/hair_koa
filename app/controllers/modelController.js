@@ -31,7 +31,7 @@ const addModel = async (ctx) => {
     ctx.body = { error: 'something went wrong' };
   }
   ctx.status = 200;
-  ctx.body = { status: 'ok' };
+  ctx.body = { status: 'додано' };
 };
 
 const getModels = async (ctx) => {
