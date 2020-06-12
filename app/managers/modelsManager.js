@@ -16,7 +16,12 @@ const getModels = () => {
   return knex(TABLE_NAME).select();
 };
 
+const getModelByParams = (params) => {
+  return knex(TABLE_NAME).where(params);
+};
+
 module.exports = {
   addModel,
   getModels,
+  getModelByParams,
 }

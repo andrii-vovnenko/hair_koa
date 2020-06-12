@@ -40,7 +40,18 @@ const getModels = async (ctx) => {
   return ctx.body = models;
 };
 
+const getModel = async (ctx) => {
+  const { query } = ctx.request;
+  const { modelId } = query;
+  const [model] = await modelManager.getModelByParams({ modelId });
+  return ctx.body = {
+    status: 'ok',
+    model,
+  };
+};
+
 module.exports = {
   addModel,
   getModels,
+  getModel,
 }
