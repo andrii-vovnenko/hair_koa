@@ -1,4 +1,6 @@
 const modelManager = require('../managers/modelsManager');
+const modelColorsManager = require('../managers/modelColorsManager');
+const colorManager = require('../managers/colorsManager');
 
 const delay = (ms) => {
   return new Promise((res) => {
@@ -44,14 +46,29 @@ const getModel = async (ctx) => {
   const { query } = ctx.request;
   const { modelId } = query;
   const [model] = await modelManager.getModelByParams({ modelId });
+  const modelColors = await modelColorsManager.getModelColors({ modelId });
+  const colors = await colorManager.getColors();
   return ctx.body = {
     status: 'ok',
-    model,
+    model: Object.assign(model, { colors: modelColors }),
+    entities: {
+      colors,
+    }
   };
+};
+
+const addColorToModel = async (ctx) => {
+  const { body } = ctx.request;
+  if ( !body.colorId || !body.modelId ) return ctx.status = 300;
+  await modelColorsManager.addModelColor(body);
+  return ctx.body = {
+    status: 'ok',
+  }
 };
 
 module.exports = {
   addModel,
   getModels,
   getModel,
+  addColorToModel,
 }
