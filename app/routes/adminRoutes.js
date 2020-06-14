@@ -9,4 +9,5 @@ module.exports = (router) => {
     .get('/admin/getModels', modelController.getModels)
     .get('/admin/getModel', modelController.getModel)
     .post('/admin/addModelColor', modelController.addColorToModel)
+    .post('/admin/images/upload', modelController.uploadImages)
 };

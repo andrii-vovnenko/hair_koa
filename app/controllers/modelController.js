@@ -1,6 +1,7 @@
 const modelManager = require('../managers/modelsManager');
 const modelColorsManager = require('../managers/modelColorsManager');
 const colorManager = require('../managers/colorsManager');
+const asyncBusboy = require('async-busboy');
 
 const delay = (ms) => {
   return new Promise((res) => {
@@ -66,9 +67,15 @@ const addColorToModel = async (ctx) => {
   }
 };
 
+const uploadImages = async (ctx) => {
+  const {files, fields} = await asyncBusboy(ctx.req);
+  console.log('uploadImages: ', files.length, fields);
+};
+
 module.exports = {
   addModel,
   getModels,
   getModel,
   addColorToModel,
+  uploadImages,
 }
