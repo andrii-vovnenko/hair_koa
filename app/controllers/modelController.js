@@ -30,8 +30,9 @@ const saveImage = async ({ file, modelColorId }) => {
 const writeFileToFs = ({ width, height, modelColorId, file }) => {
   return new Promise(res => {
     const fileName = `${modelColorId}${uniqId(5)}${width}x${height}`;
-    file.pipe(transformer(width, height)).pipe(fs.createWriteStream(makePathToImages({ fileName })));
-    res(fileName);
+    file.pipe(transformer(width, height)).pipe(fs.createWriteStream(makePathToImages({ fileName }))).on('finish', () => {
+      res(fileName);
+    });
   })
 }
 // todo
