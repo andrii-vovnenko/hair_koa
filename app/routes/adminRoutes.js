@@ -13,4 +13,6 @@ module.exports = (router) => {
     .post('/admin/images/upload', modelController.uploadImages)
     .post('/admin/images/delete', modelController.deleteImage)
     .post('/admin/setSell', actionController.setSell)
+    .get('/admin/sellStatistic', actionController.getAllSellerStatistics)
+    .post('/admin/cancelPurchase', actionController.cancelPurchase)
 };
