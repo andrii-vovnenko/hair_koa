@@ -1,5 +1,6 @@
 const colorController = require('../controllers/colorController');
 const modelController = require('../controllers/modelController');
+const actionController = require('../controllers/actionController');
 
 module.exports = (router) => {
   router
@@ -11,4 +12,5 @@ module.exports = (router) => {
     .post('/admin/addModelColor', modelController.addColorToModel)
     .post('/admin/images/upload', modelController.uploadImages)
     .post('/admin/images/delete', modelController.deleteImage)
+    .post('/admin/setSell', actionController.setSell)
 };

@@ -7,6 +7,8 @@ const fs = require('fs');
 const sharp = require('sharp');
 const asyncBusboy = require('async-busboy');
 const groupBy = require('lodash/groupBy');
+const keyBy = require('lodash/keyBy');
+const get = require('lodash/get');
 
 // todo move methods to helpers
 const delay = (ms) => {
@@ -18,7 +20,7 @@ const delay = (ms) => {
 };
 const formats = ['.jpeg', '.jpg', '.JPG', '.png', '.PNG'];
 const makePathToImages = ({ fileName }) => `${__dirname}/../public/images/${fileName}`;
-const transformer = (width, height) => new sharp().resize({width, height, fit: 'contain' }).webp();
+const transformer = (width, height) => new sharp().rotate().resize(width, null, { fit: 'contain' }).webp();
 const saveImage = async ({ file, modelColorId }) => {
   const [fileName320, fileName640, fileName1024] = await Promise.all([
     writeFileToFs({ modelColorId, file, height: 240, width: 320 }),
@@ -64,9 +66,25 @@ const addModel = async (ctx) => {
 };
 
 const getModels = async (ctx) => {
-  const models = await modelManager.getModels();
-  await delay(500);
-  return ctx.body = models;
+  const { query } = ctx.request;
+
+  if(!Object.keys(query).length) {
+    const [models] = await modelManager.getModels();
+    return ctx.body = models;
+  }
+  const [models] = await modelManager.getModelsByName({ modelName: query.modelName, fields: ['modelId', 'modelName']})
+  const modelsIds = models.map(({ modelId }) => modelId);
+  const modelsColors = await modelColorsManager
+    .getColorsByModelIds({ modelsIds })
+  const groupedModelColors = groupBy(modelsColors, 'modelId');
+  const modelsData = models
+    .map(model => Object.assign(
+      {}, model, { colors: get(groupedModelColors, [model.modelId], []).map(
+        ({ colorId }) => colorId) })
+    );
+  return ctx.body = {
+    modelsData
+  };
 };
 
 const getModel = async (ctx) => {
@@ -116,7 +134,6 @@ const uploadImages = async (ctx) => {
     });
   }));
   const photos = await modelPhotosManager.getPhotosByParams({ modelId });
-  await delay(1000);
   return ctx.body = {
     status: 'ok',
     entities: {

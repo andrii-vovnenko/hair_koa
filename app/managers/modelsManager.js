@@ -13,15 +13,26 @@ const addModel = (modelData) => {
 };
 
 const getModels = () => {
-  return knex(TABLE_NAME).select();
+  return knex.raw(`select m.*, sum(mc.count) as count
+                          from models as m
+                          left join modelColorCount mc on m.modelId = mc.modelId
+                          group by m.modelId;
+                          `);
 };
 
 const getModelByParams = (params) => {
   return knex(TABLE_NAME).where(params);
 };
 
+const getModelsByName = ({modelName, fields}) => knex.raw(`
+  SELECT ${!fields ? '*' : fields.join(', ')}
+  FROM models
+  WHERE modelName like '%${modelName}%';
+`);
+
 module.exports = {
   addModel,
   getModels,
   getModelByParams,
+  getModelsByName,
 }
