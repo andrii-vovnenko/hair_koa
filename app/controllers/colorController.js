@@ -1,7 +1,5 @@
 const colorsManages = require('../managers/colorsManager');
 
-const delay = (ms) => new Promise((res) => setTimeout(() => res(), ms));
-
 const addColor = async (ctx) => {
   const { colorName, colorTypeId } = ctx.request.body;
   if (!colorName || !colorTypeId) return ctx.body = {status: 'failed'}

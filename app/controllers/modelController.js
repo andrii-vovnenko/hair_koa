@@ -2,12 +2,12 @@ const modelManager = require('../managers/modelsManager');
 const modelColorsManager = require('../managers/modelColorsManager');
 const colorManager = require('../managers/colorsManager');
 const modelPhotosManager = require('../managers/modelPhotosManager');
+const purchaseManager = require('../managers/purchaseManager');
 const uniqId = require('nanoid');
 const fs = require('fs');
 const sharp = require('sharp');
 const asyncBusboy = require('async-busboy');
 const groupBy = require('lodash/groupBy');
-const keyBy = require('lodash/keyBy');
 const get = require('lodash/get');
 
 // todo move methods to helpers
@@ -43,10 +43,8 @@ const addModel = async (ctx) => {
   const {
     modelName, price, materialId, typeId, length, producer,
   } = ctx.request.body;
-  await delay(500);
   if (!modelName || !price || !materialId || !typeId || !producer) {
-    ctx.status = 400;
-    return ctx.body = { error: 'not enough of data' }
+    return ctx.body = { status: 'заповніть всі поля' }
   }
   try {
     await modelManager.addModel({
@@ -106,11 +104,18 @@ const getModel = async (ctx) => {
 
 const addColorToModel = async (ctx) => {
   const { body } = ctx.request;
-  if ( !body.colorId || !body.modelId ) return ctx.status = 300;
+
+  const { count, colorId, modelId } = body;
+
+  if ( !colorId || !modelId ) return ctx.body = { status: 'немає данних' };
+
+  const [prevColorCount] = await modelColorsManager.getModelColors({ colorId, modelId })
   await modelColorsManager.addModelColor(body);
-  return ctx.body = {
-    status: 'ok',
+  if (prevColorCount && prevColorCount.count < count) { // запис в табличку приходу (якщо такий товар вже існує і нова к-сть більша за попередню)
+    await purchaseManager.addPurchase({ modelId, colorId, count: count - prevColorCount.count });
   }
+
+  return ctx.body = { status: 'ok' };
 };
 
 const uploadImages = async (ctx) => {

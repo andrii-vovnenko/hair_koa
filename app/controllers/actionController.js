@@ -25,7 +25,6 @@ const setSell = async (ctx) => {
 const cancelPurchase = async (ctx) => {
   const { sellId } = ctx.request.body;
   await sellerManager.cancelPurchase(sellId);
-  console.log(sellId)
   const [sells] = await sellerManager.getSells();
   return ctx.body = {
     newStatistics: sells,
