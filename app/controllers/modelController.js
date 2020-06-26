@@ -111,8 +111,9 @@ const addColorToModel = async (ctx) => {
 
   const [prevColorCount] = await modelColorsManager.getModelColors({ colorId, modelId })
   await modelColorsManager.addModelColor(body);
-  if (prevColorCount && prevColorCount.count < count) { // запис в табличку приходу (якщо такий товар вже існує і нова к-сть більша за попередню)
-    await purchaseManager.addPurchase({ modelId, colorId, count: count - prevColorCount.count });
+  const prevCount = get(prevColorCount, ['count'], 0);
+  if (prevCount < count || !prevColorCount) { // запис в табличку приходу (якщо такий товар вже існує і нова к-сть більша за попередню)
+    await purchaseManager.addPurchase({ modelId, colorId, count: count - prevCount });
   }
 
   return ctx.body = { status: 'ok' };
