@@ -6,4 +6,6 @@ module.exports = {
   HIGHLIGHTS_LIGHT: 5,
   HIGHLIGHTS_DARK: 6,
   AMBRE: 7,
+  DARK_BLOND: 8,
+  LIGHT_BLOND: 9,
 };
