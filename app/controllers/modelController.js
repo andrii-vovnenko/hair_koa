@@ -110,12 +110,15 @@ const addColorToModel = async (ctx) => {
   if ( !colorId || !modelId ) return ctx.body = { status: 'немає данних' };
 
   const [prevColorCount] = await modelColorsManager.getModelColors({ colorId, modelId })
-  await modelColorsManager.addModelColor(body);
+  try {
+    await modelColorsManager.addModelColor(body);
+  } catch (e) {
+    return ctx.body = { status: 'невдача' };
+  }
   const prevCount = get(prevColorCount, ['count'], 0);
   if (prevCount < count || !prevColorCount) { // запис в табличку приходу (якщо такий товар вже існує і нова к-сть більша за попередню)
     await purchaseManager.addPurchase({ modelId, colorId, count: count - prevCount });
   }
-
   return ctx.body = { status: 'ok' };
 };
 
