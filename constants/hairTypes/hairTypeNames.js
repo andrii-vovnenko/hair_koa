@@ -1,4 +1,6 @@
-const { HAIR_EXTENSION, KANEKALON, TAIL, WEAVE, WIG, BANGS, NAKLADKA } = require('./hairTypeIds');
+const {
+  HAIR_EXTENSION, KANEKALON, TAIL, WEAVE, WIG, BANGS, NAKLADKA, SCRUNCHY, STRIP,
+} = require('./hairTypeIds');
 
 module.exports = {
   [HAIR_EXTENSION]: 'Нарощування',
@@ -8,4 +10,6 @@ module.exports = {
   [WEAVE]: 'Шиньон',
   [BANGS]: 'Чубчик',
   [NAKLADKA]: 'Накладка',
+  [SCRUNCHY]: 'Резинка',
+  [STRIP]: 'Полоска',
 }
