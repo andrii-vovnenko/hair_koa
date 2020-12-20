@@ -1,4 +1,3 @@
-const head = require('lodash/head');
 const { knex } = require('../knex');
 
 const TABLE_NAME = 'modelPhotos';
@@ -13,4 +12,4 @@ module.exports = {
   insertPhoto,
   getPhotosByParams,
   deletePhoto,
-}
+};

@@ -13,11 +13,17 @@ const getAllSellerStatistics = async (ctx) => {
 
 const setSell = async (ctx) => {
   const { modelId, colorId } = ctx.request.body;
+  if (!modelId || !colorId) {
+    ctx.body = {
+      status: 'not allowed',
+    };
+    return;
+  }
   const modelColorId = makeModelColorId({ modelId, colorId });
   await sellerManager.setSell({ modelId, colorId })
     .then(() => modelColorsManager.decrementModelCount({ modelColorId }))
     .then(() => console.log('sold'));
-  return ctx.body = {
+  ctx.body = {
     status: 'оформленно',
   };
 };
