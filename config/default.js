@@ -9,7 +9,7 @@ module.exports = {
     user: 'master',
     password: 'Djdytyrj1992',
     dbName: 'hair',
-    host: '0.0.0.0',
-    port: '3306',
+    host: '8.211.2.107',
+    port: '33066',
   },
 };
